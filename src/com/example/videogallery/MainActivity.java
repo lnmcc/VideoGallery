@@ -122,21 +122,34 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			LayoutInflater inflater;
-			// 绑定一个layout xml文件
-			inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View row = inflater.inflate(R.layout.list_view, null);
-			ImageView thumb = (ImageView) row.findViewById(R.id.imgView);
+			//复用同一个View
+			if(convert == null)a {
 
-			if (videos.get(position).thumbPath != null) {
-				thumb.setImageURI(Uri.parse(videos.get(position).thumbPath));
+				LayoutInflater inflater;
+				// 绑定一个layout xml文件
+				inflater = (LayoutInflater) context
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View row = inflater.inflate(R.layout.list_view, null);
+				ImageView thumb = (ImageView) row.findViewById(R.id.imgView);
+
+				if (videos.get(position).thumbPath != null) {
+					thumb.setImageURI(Uri.parse(videos.get(position).thumbPath));
+				}
+				TextView title = (TextView) row.findViewById(R.id.tv);
+				title.setText(videos.get(position).title);
+
+				return row;
+			} else {
+
+				ImageView thumb = (ImageView) convertView.findViewById(R.id.imgView);
+
+				if (videos.get(position).thumbPath != null) {
+					thumb.setImageURI(Uri.parse(videos.get(position).thumbPath));
+				}
+				TextView title = (TextView) convertView.findViewById(R.id.tv);
+				title.setText(videos.get(position).title);
+				return convertView;
 			}
-			TextView title = (TextView) row.findViewById(R.id.tv);
-			title.setText(videos.get(position).title);
-
-			return row;
-		}
 	}
 
 	@Override
